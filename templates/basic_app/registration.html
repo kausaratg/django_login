@@ -2,19 +2,21 @@
 {%extends 'basic_app/base.html' %}
 {%load static%}
 {%block body_block%}
+    {%for message in messages %}
+        {{ message }}
+    {% endfor %}
     <div class='jumbotron'>
-        {%if registered %}
+        {% if registered == True  %}
             <h1>Thanks for registering</h1>
-        {%else %}
-        <h1>Register here<h1>
-        <h3>Fill out the form: </h3>
-        <form method='POST' action='' enctype="multipart/form-data">
-            {%csrf_token%}
-            {{user_form.as_p}}
-            {{profile_form.as_p}}
-            <input type='submit' value='register'>
-        </form>
+        {% else %}
+            <h1>Register here<h1>
+            <h3>Fill out the form: </h3>
+            <form method='POST' action='' enctype="multipart/form-data">
+                {%csrf_token%}
+                {{user_form.as_p}}
+                {{profile_form.as_p}}
+                <input type='submit' value='register'>
+            </form>
         {% endif %}
 {% endblock %}
     </div>
-

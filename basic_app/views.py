@@ -12,6 +12,8 @@ def index(request):
     return render(request, 'basic_app/index.html')
 
 def register(request):
+    user_form= UserForms()
+    profile_form = UserProfileForms()
     registered = False
     if request.method == 'POST':
     #getting the data from the user
@@ -33,22 +35,23 @@ def register(request):
             profile.save()            
             messages.info(request, 'saved')
             registered = True
+            login(request, user)
             context = { 'registered':registered}
             return render(request, 'basic_app/registration.html',  context)
         else:
             messages.info(request , 'invalid credentials')
             return redirect('register')
     else:
-        user_form= UserForms()
-        profile_form = UserProfileForms()
+
         context = {'user_form':user_form, 'profile_form':profile_form, 'registered':registered}
         return render(request, 'basic_app/registration.html',  context)
 
 def user_login(request):
-    if request.method == 'POST':
+    username=password=''
+    if request.POST:
         username = request.POST['username']
         password = request.POST['password']
-        user = authenticate(username=username, password=password)
+        user = authenticate(request, username=username, password=password)
         if user is not None:
             if user.is_active:
                 login(request, user)
@@ -57,6 +60,7 @@ def user_login(request):
                 return HttpResponse('account not active')
         else:
             print('someone tried to login and failed ')
+            print(f'{username}, {password}')
             return HttpResponse('invalid supply')
     else:      
         return render(request, 'basic_app/login.html')

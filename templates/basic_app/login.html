@@ -2,7 +2,7 @@
 {% block body_block%}
     <div class=jumbotron>
         <h1>Please Login</h1>
-        <form action="{%url 'user_login' %}" method='POST'>
+        <form action=" " method='POST'>
             {%csrf_token%}
             <label for="username">Username: </label>
             <input type="text" name="username" placeholder="enter username">
